@@ -3,11 +3,13 @@ import catchAsync from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sendResponse";
 import { flatService } from "./flat.service";
 import pick from "../../../shared/pick";
-import { FilterableFlatFields } from "./flat.constant";
+import { flatFilterableFields } from "./flat.constant";
 
 const addFlat = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+  const payload = { ...req.body, userId };
   const files = Array.isArray(req.files) ? req.files : [req.files]; // Ensure req.files is an array
-  const result = await flatService.addFlat(files, req.body);
+  const result = await flatService.addFlat(files, payload);
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
@@ -16,23 +18,15 @@ const addFlat = catchAsync(async (req, res) => {
   });
 });
 
-const getAllFlats = catchAsync(async (req, res) => {
-  //console.log(req.query); ////{ searchTerm: 'water' }
-  const filter = await pick(req.query, FilterableFlatFields);
-  const options = await pick(req.query, [
-    "limit",
-    "page",
-    "sortBy",
-    "sortOrder",
-  ]);
-
-  //console.log("Options", options);
-
-  const result = await flatService.getAllFlats(filter, options);
+const getFlats = catchAsync(async (req, res) => {
+  const user = req.user as any;
+  const filters = pick(req.query, flatFilterableFields);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+  const result = await flatService.getFlatsFromDB(user, filters, options);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "All flats fetched successfully",
+    message: "All Flats retrieval successfully",
     meta: result.meta,
     data: result.data,
   });
@@ -43,7 +37,18 @@ const getFlatByUserId = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Flat fetched successfully",
+    message: "Flats Created By User fetched successfully",
+    data: result,
+  });
+});
+
+const getSingleFlat = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await flatService.getSingleFlatFromDB(id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Flat retrieval successfully",
     data: result,
   });
 });
@@ -53,7 +58,20 @@ const updateFlat = catchAsync(async (req, res) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Flat updated successfully",
+    message: "Flat Data updated successfully",
+    data: result,
+  });
+});
+
+const updateMyFlat = catchAsync(async (req, res) => {
+  const { userId } = req.user;
+  const { id } = req.params;
+  const result = await flatService.updateMyFlatDataIntoDB(id, userId, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "FLat data updated!",
     data: result,
   });
 });
@@ -70,8 +88,10 @@ const deleteFlat = catchAsync(async (req, res) => {
 
 export const flatController = {
   addFlat,
-  getAllFlats,
-  getFlatByUserId,
+  getFlats,
+  getSingleFlat,
   updateFlat,
+  updateMyFlat,
   deleteFlat,
+  getFlatByUserId,
 };

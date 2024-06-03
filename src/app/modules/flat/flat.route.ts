@@ -9,8 +9,8 @@ import { USER_ROLE } from "../User/User.constant";
 const router = express.Router();
 
 router.post(
-  "/flats",
-  auth(),
+  "/create-flat",
+  auth(USER_ROLE.ADMIN, USER_ROLE.USER),
   (req: Request, res: Response, next: NextFunction) => {
     upload(req, res, function (err) {
       if (err) {
@@ -32,19 +32,35 @@ router.post(
   flatController.addFlat
 );
 
-router.get("/flats", auth(USER_ROLE.ADMIN), flatController.getAllFlats);
-router.get("/flats/user", auth(), flatController.getFlatByUserId);
+router.get("/get-all-flats", auth(USER_ROLE.ADMIN), flatController.getFlats);
+router.get(
+  "/get-my-flats",
+  auth(USER_ROLE.USER, USER_ROLE.ADMIN),
+  flatController.getFlatByUserId
+);
 
-router.put(
-  "/flats/:flatId",
-  auth(),
-  validateRequest(flatValidationSchema.flatUpdateValidation),
+router.get(
+  "/getSingleFlat/:id",
+  auth(USER_ROLE.ADMIN, USER_ROLE.USER),
+  flatController.getSingleFlat
+);
+
+router.patch(
+  "/updateFLat/:id",
+  auth(USER_ROLE.ADMIN),
   flatController.updateFlat
 );
+
+router.patch(
+  "/updateMyFLat/:id",
+  auth(USER_ROLE.ADMIN, USER_ROLE.USER),
+  flatController.updateMyFlat
+);
+
 router.delete(
-  "/flats/:flatId",
+  "/deleteFlat/:id",
   auth(USER_ROLE.ADMIN, USER_ROLE.USER),
   flatController.deleteFlat
 );
 
-export const flatRoutes = router;
+export const FLatRoutes = router;

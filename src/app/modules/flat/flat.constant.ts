@@ -1,7 +1,6 @@
-export const FilterableFlatFields = [
-  "searchTerm",
-  "minPrice",
+export const flatFilterableFields: string[] = [
+  "location",
+  "bedrooms",
   "maxPrice",
-  "totalBedrooms",
+  "minPrice",
 ];
-export const searchableFlatFields = ["location"];

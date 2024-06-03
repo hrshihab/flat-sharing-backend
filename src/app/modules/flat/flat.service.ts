@@ -1,19 +1,20 @@
 import { Prisma } from "@prisma/client";
 import prisma from "../../../shared/prisma";
 import { TFlat } from "./flat.interface";
-import { searchableFlatFields } from "./flat.constant";
-import { IOptions, paginationHelper } from "../../../helper/paginationHelper";
+import { paginationHelper } from "../../../helper/paginationHelper";
 import { IPaginationOptions } from "../../interface/pagination";
 import { sendImageToCloudinary } from "../../../shared/sendImageToCloudinary";
 import ApiError from "../../errors/ApiError";
 import httpStatus from "http-status";
+import { USER_ROLE } from "../User/User.constant";
+import { IAuthUser } from "../../interface/common";
 
 const addFlat = async (files: any[], payload: TFlat) => {
   try {
     const imageUrls = [];
     if (files && files.length > 0) {
       for (const file of files) {
-        const imageName = `flat-${payload.rent}-${file.originalname}`;
+        const imageName = `flat-${payload.rentAmount}-${file.originalname}`;
         const path = file.path;
         const response = await sendImageToCloudinary(imageName, path);
         const { secure_url } = response as { secure_url: string };
@@ -25,6 +26,7 @@ const addFlat = async (files: any[], payload: TFlat) => {
       data: {
         ...payload,
         photos: imageUrls,
+        // Add the user property
       },
     });
 
@@ -34,39 +36,54 @@ const addFlat = async (files: any[], payload: TFlat) => {
   }
 };
 
-const getAllFlats = async (params: any, options: IPaginationOptions) => {
-  const { page, limit, skip } = paginationHelper.calculatePagination(options);
-  const { searchTerm, minPrice, maxPrice, totalBedrooms } = params;
+const getFlatsFromDB = async (
+  user: IAuthUser,
+  filters: any,
+  options: IPaginationOptions & {
+    location?: string;
+    priceMin?: number;
+    priceMax?: number;
+    bedrooms?: number;
+  }
+) => {
+  const { limit, page, skip } = paginationHelper.calculatePagination(options);
+  const { location, priceMin, priceMax, bedrooms } = filters;
+
   const andConditions: Prisma.FlatWhereInput[] = [];
 
-  if (searchTerm) {
+  // Filter by user role
+  if (user?.role === USER_ROLE.USER || user?.role === USER_ROLE.ADMIN) {
+    andConditions.push({
+      user: {
+        email: user?.email,
+      },
+    });
+  }
+
+  // Filter by location
+  if (location) {
     andConditions.push({
       location: {
-        contains: searchTerm,
-        mode: "insensitive",
+        contains: location,
+        mode: "insensitive", // Case-insensitive search
       },
     });
   }
 
-  if (minPrice) {
+  // Filter by price range
+  if (priceMin !== undefined || priceMax !== undefined) {
     andConditions.push({
-      rent: {
-        gte: Number(minPrice),
+      rentAmount: {
+        gte: priceMin,
+        lte: priceMax,
       },
     });
   }
 
-  if (maxPrice) {
+  // Filter by number of bedrooms
+  if (bedrooms) {
     andConditions.push({
-      rent: {
-        lte: Number(maxPrice),
-      },
-    });
-  }
-
-  if (totalBedrooms) {
-    andConditions.push({
-      totalBedrooms: Number(totalBedrooms),
+      bedrooms: Number(bedrooms),
     });
   }
 
@@ -79,12 +96,21 @@ const getAllFlats = async (params: any, options: IPaginationOptions) => {
     take: limit,
     orderBy:
       options.sortBy && options.sortOrder
-        ? {
-            [options.sortBy]: options.sortOrder,
-          }
-        : {
-            createdAt: "desc",
-          },
+        ? { [options.sortBy]: options.sortOrder }
+        : { createdAt: "desc" },
+    include: {
+      user: {
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          profilePhoto: true,
+          role: true,
+          needPasswordChange: true,
+          status: true,
+        },
+      },
+    },
   });
 
   const total = await prisma.flat.count({
@@ -111,16 +137,57 @@ const getFlatByUserId = async (userId: string) => {
   return result;
 };
 
+const getSingleFlatFromDB = async (id: string) => {
+  const result = await prisma.flat.findFirstOrThrow({
+    where: {
+      id,
+    },
+    select: {
+      id: true,
+      location: true,
+      description: true,
+      photos: true,
+      rentAmount: true,
+      bedrooms: true,
+      amenities: true,
+      userId: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+  return result;
+};
+
 const updateFlat = async (flatId: string, payload: TFlat) => {
   const result = await prisma.flat.update({
     where: {
       id: flatId,
     },
-    data: {
-      ...payload,
+    data: payload,
+  });
+
+  return result;
+};
+
+const updateMyFlatDataIntoDB = async (
+  id: string,
+  userId: string,
+  payload: any
+) => {
+  await prisma.flat.findFirstOrThrow({
+    where: {
+      id,
+      userId,
     },
   });
 
+  const result = await prisma.flat.update({
+    where: {
+      id,
+      userId,
+    },
+    data: payload,
+  });
   return result;
 };
 
@@ -156,7 +223,9 @@ const deleteFlat = async (flatId: string) => {
 
 export const flatService = {
   addFlat,
-  getAllFlats,
+  getFlatsFromDB,
+  getSingleFlatFromDB,
+  updateMyFlatDataIntoDB,
   updateFlat,
   deleteFlat,
   getFlatByUserId,

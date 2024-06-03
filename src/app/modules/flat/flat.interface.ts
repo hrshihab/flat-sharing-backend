@@ -4,4 +4,5 @@ export type TFlat = {
   rentAmount: number;
   bedrooms: number;
   amenities: string[];
+  userId: string;
 };
