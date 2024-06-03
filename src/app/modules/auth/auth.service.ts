@@ -8,10 +8,15 @@ import { generateToken, jwtHelper } from "../../../helper/jwtHelper";
 import { UserStatus } from "@prisma/client";
 import emailSender from "./emailSender";
 
-const loginUser = async (payload: { login: string; password: string }) => {
+const loginUser = async (payload: {
+  email?: string;
+  username?: string;
+  password: string;
+}) => {
+  console.log("loginUser", payload);
   const user = await prisma.user.findFirst({
     where: {
-      OR: [{ email: payload.login }, { username: payload.login }],
+      OR: [{ email: payload.email }, { username: payload.username }],
       status: UserStatus.ACTIVE,
     },
     select: {

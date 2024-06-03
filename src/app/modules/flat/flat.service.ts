@@ -11,6 +11,7 @@ import { IAuthUser } from "../../interface/common";
 
 const addFlat = async (files: any[], payload: TFlat) => {
   try {
+    console.log(payload);
     const imageUrls = [];
     if (files && files.length > 0) {
       for (const file of files) {
@@ -48,17 +49,18 @@ const getFlatsFromDB = async (
 ) => {
   const { limit, page, skip } = paginationHelper.calculatePagination(options);
   const { location, priceMin, priceMax, bedrooms } = filters;
+  console.log(priceMax, priceMin, location, bedrooms);
 
   const andConditions: Prisma.FlatWhereInput[] = [];
 
   // Filter by user role
-  if (user?.role === USER_ROLE.USER || user?.role === USER_ROLE.ADMIN) {
-    andConditions.push({
-      user: {
-        email: user?.email,
-      },
-    });
-  }
+  // if (user?.role === USER_ROLE.USER || user?.role === USER_ROLE.ADMIN) {
+  //   andConditions.push({
+  //     user: {
+  //       email: user?.email,
+  //     },
+  //   });
+  // }
 
   // Filter by location
   if (location) {
@@ -71,12 +73,17 @@ const getFlatsFromDB = async (
   }
 
   // Filter by price range
+
   if (priceMin !== undefined || priceMax !== undefined) {
+    const rentFilter: any = {};
+    if (priceMin !== undefined) {
+      rentFilter.gte = Number(priceMin);
+    }
+    if (priceMax !== undefined) {
+      rentFilter.lte = Number(priceMax);
+    }
     andConditions.push({
-      rentAmount: {
-        gte: priceMin,
-        lte: priceMax,
-      },
+      rentAmount: rentFilter,
     });
   }
 
@@ -128,9 +135,10 @@ const getFlatsFromDB = async (
 };
 
 const getFlatByUserId = async (userId: string) => {
+  console.log(userId);
   const result = await prisma.flat.findMany({
     where: {
-      id: userId,
+      userId: userId,
     },
   });
 
@@ -158,7 +166,8 @@ const getSingleFlatFromDB = async (id: string) => {
   return result;
 };
 
-const updateFlat = async (flatId: string, payload: TFlat) => {
+const updateFlat = async (flatId: string, payload: Partial<TFlat>) => {
+  console.log(flatId, payload);
   const result = await prisma.flat.update({
     where: {
       id: flatId,

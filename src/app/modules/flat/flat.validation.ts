@@ -2,23 +2,21 @@ import { z } from "zod";
 
 const flatValidation = z.object({
   body: z.object({
-    squareFeet: z.number(),
-    totalBedrooms: z.number(),
-    amenities: z.string(),
     location: z.string(),
     description: z.string(),
-    rent: z.number(),
+    rentAmount: z.number(),
+    bedrooms: z.number(),
+    amenities: z.array(z.string()),
   }),
 });
 
 const flatUpdateValidation = z.object({
   body: z.object({
-    squareFeet: z.number().optional(),
-    totalBedrooms: z.number().optional(),
-    amenities: z.string().optional(),
     location: z.string().optional(),
     description: z.string().optional(),
-    rent: z.number().optional(),
+    rentAmount: z.number().optional(),
+    bedrooms: z.number().optional(),
+    amenities: z.array(z.string()).optional(),
   }),
 });
 

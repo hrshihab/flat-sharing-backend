@@ -16,15 +16,23 @@ router.post(
       if (err) {
         return res.status(400).json({ message: err.message });
       }
-      ////console.log("files:", req.files); // Log the files
-      ////console.log("req.body:", req.body); // Log the body before parsing
+      //console.log("files:", req.files); // Log the files
+      //console.log("req.body before parsing:", req.body); // Log the body before parsing
+
       try {
-        req.body = JSON.parse(req.body.data);
+        if (req.body.data) {
+          // Check if req.body.data is a string and parse it
+          //console.log("req.body.data before parsing:", req.body.data);
+          req.body = JSON.parse(req.body.data);
+          //console.log("req.body after parsing:", req.body);
+        }
         next();
-      } catch (error) {
-        return res
-          .status(400)
-          .json({ message: "Invalid JSON in request body" });
+      } catch (error: any) {
+        console.error("JSON parsing error:", error.message);
+        return res.status(400).json({
+          message: "Invalid JSON in request body",
+          error: error.message,
+        });
       }
     });
   },
@@ -33,6 +41,7 @@ router.post(
 );
 
 router.get("/get-all-flats", auth(USER_ROLE.ADMIN), flatController.getFlats);
+
 router.get(
   "/get-my-flats",
   auth(USER_ROLE.USER, USER_ROLE.ADMIN),
@@ -46,7 +55,7 @@ router.get(
 );
 
 router.patch(
-  "/updateFLat/:id",
+  "/updateFLat/:flatId",
   auth(USER_ROLE.ADMIN),
   flatController.updateFlat
 );
@@ -58,7 +67,7 @@ router.patch(
 );
 
 router.delete(
-  "/deleteFlat/:id",
+  "/deleteFlat/:flatId",
   auth(USER_ROLE.ADMIN, USER_ROLE.USER),
   flatController.deleteFlat
 );

@@ -1,26 +1,26 @@
 import express from "express";
 import { userRoutes } from "../modules/User/User.routes";
 import { authRoutes } from "../modules/auth/auth.route";
-import { flatRoutes } from "../modules/flat/flat.route";
+import { FLatRoutes } from "../modules/flat/flat.route";
 import { bookingRoutes } from "../modules/booking/booking.route";
 
 const router = express.Router();
 
 const moduleRoutes = [
   {
-    path: "/",
+    path: "/user",
     route: userRoutes,
   },
   {
-    path: "/",
+    path: "/auth",
     route: authRoutes,
   },
   {
-    path: "/",
-    route: flatRoutes,
+    path: "/flat",
+    route: FLatRoutes,
   },
   {
-    path: "/",
+    path: "/flat-share-request",
     route: bookingRoutes,
   },
 ];

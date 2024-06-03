@@ -15,7 +15,10 @@ const auth = (...requiredRoles: TUserRole[]) => {
     try {
       const token = req.headers.authorization;
       if (!token) {
-        throw new ApiError(httpStatus.UNAUTHORIZED, "You're not is authorized");
+        throw new ApiError(
+          httpStatus.UNAUTHORIZED,
+          "You're not is authorized 1"
+        );
       }
       const verifiedUser = await jwtHelper.verifyToken(
         token,
@@ -24,7 +27,10 @@ const auth = (...requiredRoles: TUserRole[]) => {
       const { role } = verifiedUser;
       //console.log(verifiedUser, requiredRoles);
       if (requiredRoles && !requiredRoles.includes(role)) {
-        throw new ApiError(httpStatus.UNAUTHORIZED, "You're not is authorized");
+        throw new ApiError(
+          httpStatus.UNAUTHORIZED,
+          "You're not is authorized 2"
+        );
       }
       req.user = verifiedUser as JwtPayload;
       next();

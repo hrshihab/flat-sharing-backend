@@ -28,7 +28,7 @@ app.get("/", (req, res) => {
   res.send("Flat Sharing Application!");
 });
 
-app.use("/api", router);
+app.use("/api/v1", router);
 app.use(globalErrorHandler);
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(httpStatus.NOT_FOUND).json({
