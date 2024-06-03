@@ -1,367 +1,328 @@
 {
-	"info": {
-		"_postman_id": "d1ba38ef-1258-4028-b37b-4712fd79e6c3",
-		"name": "Flat-Shaering-Application",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "31300739",
-		"_collection_link": "https://red-water-650015.postman.co/workspace/5e0d1998-832b-47d5-88bf-3aa2cddcfd0b/collection/31300739-d1ba38ef-1258-4028-b37b-4712fd79e6c3?action=share&source=collection_link&creator=31300739"
-	},
-	"item": [
-		{
-			"name": "user",
-			"item": [
-				{
-					"name": "create-user",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"abc2\",\r\n  \"email\": \"abc4@example.com\",\r\n  \"password\": \"securepassword\",\r\n  \"bio\":\"My Bio2\",\r\n  \"profession\":\"Developer\",\r\n  \"address\":\"Permanent Address\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{flat-shearing}}/register",
-							"host": [
-								"{{flat-shearing}}"
-							],
-							"path": [
-								"register"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get-user-profile",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{Authorization}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{flat-shearing}}/profile",
-							"host": [
-								"{{flat-shearing}}"
-							],
-							"path": [
-								"profile"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update-user-profile",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{Authorization}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"bio\": \"My Bio 2\",\r\n    \"address\": \"My address\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{flat-shearing}}/profile",
-							"host": [
-								"{{flat-shearing}}"
-							],
-							"path": [
-								"profile"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "auth",
-			"item": [
-				{
-					"name": "login",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"abc@example.com\",\r\n    \"password\": \"securepassword\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{flat-shearing}}/login",
-							"host": [
-								"{{flat-shearing}}"
-							],
-							"path": [
-								"login"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "flat",
-			"item": [
-				{
-					"name": "create-flat",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{Authorization}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n   \"squareFeet\": 850,\r\n    \"totalBedrooms\": 1,\r\n    \"totalRooms\": 3,\r\n    \"utilitiesDescription\": \"Utilities not included\",\r\n    \"location\": \"2324 Magnolia Drive, Hilltop\",\r\n    \"description\": \"Quaint apartment in a historic building.\",\r\n    \"rent\": 1250,\r\n    \"advanceAmount\": 1900,\r\n    \"availability\": true\r\n  }",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{flat-shearing}}/flats",
-							"host": [
-								"{{flat-shearing}}"
-							],
-							"path": [
-								"flats"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get-all-flats",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{Authorization}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{flat-shearing}}/flats?sortBy=rent&sortOrder=desc&availability=false",
-							"host": [
-								"{{flat-shearing}}"
-							],
-							"path": [
-								"flats"
-							],
-							"query": [
-								{
-									"key": "searchTerm",
-									"value": "parking",
-									"disabled": true
-								},
-								{
-									"key": "page",
-									"value": "2",
-									"disabled": true
-								},
-								{
-									"key": "limit",
-									"value": "7",
-									"disabled": true
-								},
-								{
-									"key": "sortBy",
-									"value": "rent"
-								},
-								{
-									"key": "sortOrder",
-									"value": "desc"
-								},
-								{
-									"key": "availability",
-									"value": "false"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update flat",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{Authorization}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"availability\":false\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{flat-shearing}}/flats/9c6e98be-1bd1-4aab-b806-8bbac4276e4d",
-							"host": [
-								"{{flat-shearing}}"
-							],
-							"path": [
-								"flats",
-								"9c6e98be-1bd1-4aab-b806-8bbac4276e4d"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "booking",
-			"item": [
-				{
-					"name": "create-booking",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{Authorization}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"flatId\":\"bb79623e-ab35-4f21-998e-d66cd25e070e\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{flat-shearing}}/booking-applications",
-							"host": [
-								"{{flat-shearing}}"
-							],
-							"path": [
-								"booking-applications"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get-bookings",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{Authorization}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{flat-shearing}}/booking-requests",
-							"host": [
-								"{{flat-shearing}}"
-							],
-							"path": [
-								"booking-requests"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update-status",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{Authorization}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"status\" : \"BOOKED\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{flat-shearing}}/booking-requests/feee8c0f-14d5-43ed-842f-7b725781ca0b",
-							"host": [
-								"{{flat-shearing}}"
-							],
-							"path": [
-								"booking-requests",
-								"feee8c0f-14d5-43ed-842f-7b725781ca0b"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		}
-	]
+  "info": {
+    "_postman_id": "d1ba38ef-1258-4028-b37b-4712fd79e6c3",
+    "name": "Flat-Shaering-Application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "31300739",
+    "_collection_link": "https://red-water-650015.postman.co/workspace/5e0d1998-832b-47d5-88bf-3aa2cddcfd0b/collection/31300739-d1ba38ef-1258-4028-b37b-4712fd79e6c3?action=share&source=collection_link&creator=31300739"
+  },
+  "item": [
+    {
+      "name": "user",
+      "item": [
+        {
+          "name": "create-user",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"abc2\",\r\n  \"email\": \"abc4@example.com\",\r\n  \"password\": \"securepassword\",\r\n  \"bio\":\"My Bio2\",\r\n  \"profession\":\"Developer\",\r\n  \"address\":\"Permanent Address\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{flat-shearing}}/register",
+              "host": ["{{flat-shearing}}"],
+              "path": ["register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-user-profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Authorization}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{flat-shearing}}/profile",
+              "host": ["{{flat-shearing}}"],
+              "path": ["profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-user-profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Authorization}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"bio\": \"My Bio 2\",\r\n    \"address\": \"My address\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{flat-shearing}}/profile",
+              "host": ["{{flat-shearing}}"],
+              "path": ["profile"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"abc@example.com\",\r\n    \"password\": \"securepassword\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{flat-shearing}}/login",
+              "host": ["{{flat-shearing}}"],
+              "path": ["login"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "flat",
+      "item": [
+        {
+          "name": "create-flat",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Authorization}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n   \"squareFeet\": 850,\r\n    \"totalBedrooms\": 1,\r\n    \"totalRooms\": 3,\r\n    \"amenities\": \"Utilities not included\",\r\n    \"location\": \"2324 Magnolia Drive, Hilltop\",\r\n    \"description\": \"Quaint apartment in a historic building.\",\r\n    \"rent\": 1250,\r\n    \"advanceAmount\": 1900,\r\n    \"availability\": true\r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{flat-shearing}}/flats",
+              "host": ["{{flat-shearing}}"],
+              "path": ["flats"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-all-flats",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Authorization}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{flat-shearing}}/flats?sortBy=rent&sortOrder=desc&availability=false",
+              "host": ["{{flat-shearing}}"],
+              "path": ["flats"],
+              "query": [
+                {
+                  "key": "searchTerm",
+                  "value": "parking",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "2",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "7",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "rent"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc"
+                },
+                {
+                  "key": "availability",
+                  "value": "false"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update flat",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Authorization}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"availability\":false\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{flat-shearing}}/flats/9c6e98be-1bd1-4aab-b806-8bbac4276e4d",
+              "host": ["{{flat-shearing}}"],
+              "path": ["flats", "9c6e98be-1bd1-4aab-b806-8bbac4276e4d"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "booking",
+      "item": [
+        {
+          "name": "create-booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Authorization}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"flatId\":\"bb79623e-ab35-4f21-998e-d66cd25e070e\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{flat-shearing}}/booking-applications",
+              "host": ["{{flat-shearing}}"],
+              "path": ["booking-applications"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get-bookings",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Authorization}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{flat-shearing}}/booking-requests",
+              "host": ["{{flat-shearing}}"],
+              "path": ["booking-requests"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update-status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{Authorization}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\" : \"BOOKED\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{flat-shearing}}/booking-requests/feee8c0f-14d5-43ed-842f-7b725781ca0b",
+              "host": ["{{flat-shearing}}"],
+              "path": [
+                "booking-requests",
+                "feee8c0f-14d5-43ed-842f-7b725781ca0b"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
 }

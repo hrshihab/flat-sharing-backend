@@ -4,8 +4,9 @@ import httpStatus from "http-status";
 import { jwtHelper } from "../../helper/jwtHelper";
 import { JwtPayload, Secret } from "jsonwebtoken";
 import config from "../../config";
+import { TUserRole } from "../modules/User/User.interface";
 
-const auth = () => {
+const auth = (...requiredRoles: TUserRole[]) => {
   return async (
     req: Request & { user?: any },
     res: Response,
@@ -20,6 +21,11 @@ const auth = () => {
         token,
         config.jwt.jwt_secret as Secret
       );
+      const { role } = verifiedUser;
+      //console.log(verifiedUser, requiredRoles);
+      if (requiredRoles && !requiredRoles.includes(role)) {
+        throw new ApiError(httpStatus.UNAUTHORIZED, "You're not is authorized");
+      }
       req.user = verifiedUser as JwtPayload;
       next();
     } catch (error) {

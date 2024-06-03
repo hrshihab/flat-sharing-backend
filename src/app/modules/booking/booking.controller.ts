@@ -7,7 +7,7 @@ const createBooking = catchAsync(async (req, res) => {
   //console.log("req body:", req.body);
   //console.log("req.user:", req.user);
   const payload = {
-    flatId: req.body.flatId,
+    ...req.body,
     userId: req.user.id,
   };
   const result = await bookingService.createBooking(payload);
@@ -29,11 +29,21 @@ const getBooking = catchAsync(async (req, res) => {
   });
 });
 
+const getBookingByUserId = catchAsync(async (req, res) => {
+  const result = await bookingService.getBookingByUserId(req.user.id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Single User Booking requests List retrieved successfully",
+    data: result,
+  });
+});
+
 const updateStatus = catchAsync(async (req, res) => {
-  console.log("come here");
+  //console.log("come here");
   const { bookingId } = req.params;
   const payload = req.body;
-  console.log(bookingId, payload);
+  //console.log(bookingId, payload);
   const result = await bookingService.updateStatus(bookingId, payload);
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -47,4 +57,5 @@ export const bookingController = {
   createBooking,
   getBooking,
   updateStatus,
+  getBookingByUserId,
 };

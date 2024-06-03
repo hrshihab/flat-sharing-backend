@@ -3,13 +3,29 @@ import cors from "cors";
 import router from "./app/routes";
 import globalErrorHandler from "./app/middleware/globalErrorHandler";
 import httpStatus from "http-status";
+import cookieParser from "cookie-parser";
 
 const app: Application = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+
+    credentials: true,
+  })
+);
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  next();
+});
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Flat Sharing Application!");
 });
 
 app.use("/api", router);

@@ -17,44 +17,36 @@ datasource db {
 model User {
   id          String    @id @default(uuid())
   email       String    @unique
-  name        String
+  username    String    @unique
   password    String
+  needPasswordChange Boolean    @default(true)
+  profilePhoto  String?
+  role        Role    @default(USER)
+  status     UserStatus @default(ACTIVE)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  profile     UserProfile?  // User can have optional profile
   booking    Booking[]  // User can have multiple bookings
+  flat       Flat[]     // User can have multiple flats
 
   @@map("users")
 }
 
-// UserProfile model representing additional information about users
-model UserProfile {
-  id           String    @id @default(uuid())
-  userId       String    @unique
-  bio          String?
-  profession   String?
-  address      String?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  user         User      @relation(fields: [userId], references: [id])
-
-  @@map("user_profiles")
-}
 
 // Flat model representing properties available for rent
 model Flat {
-  id                    String     @id @default(uuid())
-  squareFeet            Int
-  totalBedrooms         Int
-  totalRooms            Int
-  utilitiesDescription  String
-  location              String     // Consider using structured location data
-  description           String
-  rent                  Int
-  availability          Boolean    @default(true)
-  advanceAmount         Int
-  createdAt             DateTime   @default(now())
-  updatedAt             DateTime   @updatedAt
+  id             String       @id  @default(uuid())
+  location       String
+  description    String
+  rentAmount     Float
+  bedrooms       Int
+  amenities      String[]
+  photos         String[] 
+  userId          String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  
+
+  user        User      @relation(fields: [userId], references: [id])
   booking              Booking[]  // Flats can have multiple bookings
 
   @@map("flats")
@@ -64,7 +56,11 @@ model Flat {
 model Booking {
   id          String    @id @default(uuid())
   userId      String    
-  flatId      String    
+  flatId      String 
+  profession  String
+  maritalStatus String
+  PresentAddress     String 
+  phoneNo     String  
   status      Status    @default(PENDING)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -77,7 +73,18 @@ model Booking {
 }
 
 enum Status {
-  BOOKED
+  APPROVED
   PENDING
   REJECTED
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  BLOCKED
+  DELETED
 }

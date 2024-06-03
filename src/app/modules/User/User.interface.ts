@@ -1,16 +1,22 @@
+import { USER_ROLE } from "./User.constant";
+
 export type TUser = {
-  name: string;
+  username: string;
   email: string;
   password: string;
-  bio?: string;
-  profession?: string;
-  address?: string;
-  created_at: Date;
-  updated_at: Date;
+  profilePhoto?: string;
+  status: UserStatus;
+  role: TUserRole;
 };
 
+export enum UserStatus {
+  ACTIVE = "ACTIVE",
+  BLOCKED = "BLOCKED",
+  DELETED = "DELETED",
+}
+
 export type TUserProfile = {
-  bio?: string;
-  profession?: string;
-  address?: string;
+  name?: string;
 };
+
+export type TUserRole = keyof typeof USER_ROLE;

@@ -1,5 +1,5 @@
 export const Status = {
   PENDING: "PENDING",
-  BOOKED: "BOOKED",
+  APPROVED: "APPROVED",
   REJECTED: "REJECTED",
 } as const;

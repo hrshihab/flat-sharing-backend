@@ -5,7 +5,7 @@ import validateRequest from "../../middleware/validateRequest";
 import auth from "../../middleware/auth";
 
 const router = express.Router();
-console.log("Done");
+//console.log("Done");
 
 router.post(
   "/register",

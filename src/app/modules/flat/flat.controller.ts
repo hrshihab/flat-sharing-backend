@@ -6,8 +6,8 @@ import pick from "../../../shared/pick";
 import { FilterableFlatFields } from "./flat.constant";
 
 const addFlat = catchAsync(async (req, res) => {
-  //console.log("req body:", req.body);
-  const result = await flatService.addFlat(req.body);
+  const files = Array.isArray(req.files) ? req.files : [req.files]; // Ensure req.files is an array
+  const result = await flatService.addFlat(files, req.body);
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
@@ -24,7 +24,6 @@ const getAllFlats = catchAsync(async (req, res) => {
     "page",
     "sortBy",
     "sortOrder",
-    "availability",
   ]);
 
   //console.log("Options", options);
@@ -39,6 +38,16 @@ const getAllFlats = catchAsync(async (req, res) => {
   });
 });
 
+const getFlatByUserId = catchAsync(async (req, res) => {
+  const result = await flatService.getFlatByUserId(req.user.id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Flat fetched successfully",
+    data: result,
+  });
+});
+
 const updateFlat = catchAsync(async (req, res) => {
   const result = await flatService.updateFlat(req.params.flatId, req.body);
   sendResponse(res, {
@@ -49,8 +58,20 @@ const updateFlat = catchAsync(async (req, res) => {
   });
 });
 
+const deleteFlat = catchAsync(async (req, res) => {
+  const result = await flatService.deleteFlat(req.params.flatId);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Flat deleted successfully",
+    data: result,
+  });
+});
+
 export const flatController = {
   addFlat,
   getAllFlats,
+  getFlatByUserId,
   updateFlat,
+  deleteFlat,
 };

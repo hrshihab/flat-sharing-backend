@@ -3,12 +3,12 @@ import { Status } from "./booking.constant";
 import { IBooking } from "./booking.interface";
 
 const createBooking = async (payload: IBooking) => {
-  console.log(payload);
-  const { flatId, userId } = payload;
+  //console.log(payload);
+  //const { flatId, userId } = payload;
   const result = await prisma.booking.create({
     data: {
-      flatId,
-      userId,
+      ...payload,
+      status: Status.PENDING,
     },
   });
   return result;
@@ -16,6 +16,15 @@ const createBooking = async (payload: IBooking) => {
 
 const getBooking = async () => {
   const result = await prisma.booking.findMany();
+  return result;
+};
+
+const getBookingByUserId = async (userId: string) => {
+  const result = await prisma.booking.findMany({
+    where: {
+      userId: userId,
+    },
+  });
   return result;
 };
 
@@ -37,4 +46,5 @@ export const bookingService = {
   createBooking,
   getBooking,
   updateStatus,
+  getBookingByUserId,
 };
