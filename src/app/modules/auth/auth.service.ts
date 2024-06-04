@@ -30,7 +30,7 @@ const loginUser = async (payload: {
   });
   //console.log(user);
   if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+    throw new ApiError(httpStatus.NOT_FOUND, "User not Active or not found!");
   }
   const isPasswordValid = await bcrypt.compare(payload.password, user.password);
   if (!isPasswordValid) {
@@ -154,6 +154,7 @@ const forgotPassword = async (payload: { email: string }) => {
                     <button>
                         Reset Password
                     </button>
+                    <h3>Link will expired after 15 minutes!!</h3>
                 </a>
             </p>
 
@@ -183,7 +184,7 @@ const resetPassword = async (
   }
 
   // hash password
-  const password = await bcrypt.hash(payload.password, 12);
+  const password = await bcrypt.hash(payload.password, 10);
 
   // update into database
   await prisma.user.update({

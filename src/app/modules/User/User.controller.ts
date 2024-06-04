@@ -28,8 +28,13 @@ const getUserProfile = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const updateUserProfile = catchAsync(async (req: Request, res: Response) => {
+  //console.log(req.files);
   const userId = req.user.id;
-  const result = await userService.updateUserProfile(userId, req.body);
+  const result = await userService.updateUserProfile(
+    userId,
+    req.files,
+    req.body
+  );
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -38,8 +43,19 @@ const updateUserProfile = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAllUser = catchAsync(async (req: Request, res: Response) => {
+  const result = await prisma.user.findMany();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "All users retrieved successfully",
+    data: result,
+  });
+});
+
 export const userController = {
   createUser,
   getUserProfile,
   updateUserProfile,
+  getAllUser,
 };

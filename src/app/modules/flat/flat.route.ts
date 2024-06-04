@@ -67,7 +67,7 @@ router.patch(
 );
 
 router.delete(
-  "/deleteFlat/:flatId",
+  "/deleteFlat/:flatId  ",
   auth(USER_ROLE.ADMIN, USER_ROLE.USER),
   flatController.deleteFlat
 );

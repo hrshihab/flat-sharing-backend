@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { TUser, TUserProfile } from "./User.interface";
 import ApiError from "../../errors/ApiError";
 import httpStatus from "http-status";
+import { sendImageToCloudinary } from "../../../shared/sendImageToCloudinary";
 
 const prisma = new PrismaClient();
 
@@ -17,7 +18,7 @@ const createUser = async (payload: TUser) => {
       // Add any other fields that your User model requires
     };
 
-    console.log(userData);
+    // console.log(userData);
 
     const result = await prisma.user.create({
       data: userData,
@@ -45,12 +46,42 @@ const getUserProfile = async (userId: string) => {
   return result;
 };
 
-const updateUserProfile = async (userId: string, payload: Partial<TUser>) => {
-  const result = await prisma.user.update({
-    where: { id: userId },
-    data: payload,
-  });
-  return result;
+const updateUserProfile = async (
+  userId: string,
+  files: any,
+  payload: Partial<TUser>
+) => {
+  // const result = await prisma.user.update({
+  //   where: { id: userId },
+  //   data: payload,
+  // });
+  // return result;
+  try {
+    console.log(payload);
+    let photoUrl = "";
+    if (files && files.length > 0) {
+      const file = files[0];
+      const imageName = `user-${file.originalname}`;
+      const path = file.path;
+      const response = await sendImageToCloudinary(imageName, path);
+      const { secure_url } = response as { secure_url: string };
+      photoUrl = secure_url;
+    }
+    console.log(photoUrl);
+
+    const result = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        ...payload,
+        profilePhoto: photoUrl,
+        // Add the user property
+      },
+    });
+
+    return result;
+  } catch (error) {
+    throw new Error(error as string);
+  }
 };
 
 //get  all user from database

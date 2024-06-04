@@ -12,6 +12,9 @@ const userUpdateValidationSchema = z.object({
   body: z.object({
     username: z.string().optional(),
     email: z.string().optional(),
+    status: z.enum(["ACTIVE", "BLOCKED", "DELETED"]).optional(),
+    // role will be ADMIN or USER
+    role: z.enum(["ADMIN", "USER"]).optional(),
   }),
 });
 
