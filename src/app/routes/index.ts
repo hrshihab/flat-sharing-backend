@@ -20,7 +20,7 @@ const moduleRoutes = [
     route: FLatRoutes,
   },
   {
-    path: "/flat-share-request",
+    path: "/flat-share",
     route: bookingRoutes,
   },
 ];

@@ -8,8 +8,8 @@ const sendResponse = <T>(
     message: string;
     meta?: {
       total: number;
-      page: number;
-      limit: number;
+      page?: number;
+      limit?: number;
     };
     data: T | null | undefined;
   }

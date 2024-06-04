@@ -21,11 +21,13 @@ const createBooking = catchAsync(async (req, res) => {
 
 const getBooking = catchAsync(async (req, res) => {
   const result = await bookingService.getBooking();
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Booking requests retrieved successfully",
-    data: result,
+    message: "All Booking requests retrieved successfully",
+    meta: { total: result.total },
+    data: result.result,
   });
 });
 
@@ -39,12 +41,30 @@ const getBookingByUserId = catchAsync(async (req, res) => {
   });
 });
 
+const getBookingByFlatId = catchAsync(async (req, res) => {
+  const { flatId } = req.params;
+  const { id, role } = req.user;
+  const result = await bookingService.getBookingByFlatId(flatId, id, role);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Booking requests by FlatId retrieved successfully",
+    data: result,
+  });
+});
+
 const updateStatus = catchAsync(async (req, res) => {
   //console.log("come here");
   const { bookingId } = req.params;
+  const { id, role } = req.user;
   const payload = req.body;
   //console.log(bookingId, payload);
-  const result = await bookingService.updateStatus(bookingId, payload);
+  const result = await bookingService.updateStatus(
+    bookingId,
+    payload,
+    id,
+    role
+  );
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -58,4 +78,5 @@ export const bookingController = {
   getBooking,
   updateStatus,
   getBookingByUserId,
+  getBookingByFlatId,
 };

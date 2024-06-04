@@ -87,6 +87,7 @@ const updateUserProfile = async (
 //get  all user from database
 const getAllUser = async () => {
   const result = await prisma.user.findMany();
+
   return result;
 };
 

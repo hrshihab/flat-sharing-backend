@@ -53,15 +53,6 @@ const getFlatsFromDB = async (
 
   const andConditions: Prisma.FlatWhereInput[] = [];
 
-  // Filter by user role
-  // if (user?.role === USER_ROLE.USER || user?.role === USER_ROLE.ADMIN) {
-  //   andConditions.push({
-  //     user: {
-  //       email: user?.email,
-  //     },
-  //   });
-  // }
-
   // Filter by location
   if (location) {
     andConditions.push({

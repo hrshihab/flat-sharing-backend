@@ -5,25 +5,36 @@ import { bookingValidation } from "./booking.validation";
 import validateRequest from "../../middleware/validateRequest";
 import { USER_ROLE } from "../User/User.constant";
 const router = express.Router();
-
+//create booking requests
 router.post(
-  "/booking-applications",
+  "/booking-requests",
   auth(USER_ROLE.ADMIN, USER_ROLE.USER),
   bookingController.createBooking
 );
+//get all booking requests by Admin
 router.get(
-  "/booking-requests",
+  "/get-all-requests",
   auth(USER_ROLE.ADMIN),
   bookingController.getBooking
 );
+//get booking requests by flat id
 router.get(
-  "/booking-requests/user",
-  auth(USER_ROLE.USER),
+  "/get-all-requests/:flatId",
+  auth(USER_ROLE.ADMIN, USER_ROLE.USER),
+  bookingController.getBookingByFlatId
+);
+
+//get booking requests by user id
+router.get(
+  "/get-user-booking-requests",
+  auth(USER_ROLE.USER, USER_ROLE.ADMIN),
   bookingController.getBookingByUserId
 );
+
+//update booking status
 router.put(
   "/booking-requests/:bookingId",
-  auth(USER_ROLE.ADMIN),
+  auth(USER_ROLE.ADMIN, USER_ROLE.USER),
   validateRequest(bookingValidation.bookingStatusValidation),
   bookingController.updateStatus
 );

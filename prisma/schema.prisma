@@ -57,8 +57,10 @@ model Booking {
   id          String    @id @default(uuid())
   userId      String    
   flatId      String 
+  name        String
+  age         Int
   profession  String
-  maritalStatus String
+  maritalStatus MaritalStatus 
   PresentAddress     String 
   phoneNo     String  
   status      Status    @default(PENDING)
@@ -87,4 +89,11 @@ enum UserStatus {
   ACTIVE
   BLOCKED
   DELETED
+}
+
+
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  SEPERATED
 }

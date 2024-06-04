@@ -6,7 +6,7 @@ import pick from "../../../shared/pick";
 import { flatFilterableFields } from "./flat.constant";
 
 const addFlat = catchAsync(async (req, res) => {
-  console.log(req.body, req.files);
+  //console.log(req.body, req.files);
   const userId = req.user.id;
   const payload = { ...req.body, userId };
   console.log(payload);
@@ -23,7 +23,7 @@ const addFlat = catchAsync(async (req, res) => {
 const getFlats = catchAsync(async (req, res) => {
   const user = req.user as any;
   const filters = pick(req.query, flatFilterableFields);
-  console.log(filters);
+  //console.log(filters);
   const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
   const result = await flatService.getFlatsFromDB(user, filters, options);
   sendResponse(res, {

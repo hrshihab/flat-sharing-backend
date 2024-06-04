@@ -13,7 +13,7 @@ const loginUser = async (payload: {
   username?: string;
   password: string;
 }) => {
-  console.log("loginUser", payload);
+  //console.log("loginUser", payload);
   const user = await prisma.user.findFirst({
     where: {
       OR: [{ email: payload.email }, { username: payload.username }],
