@@ -21,7 +21,7 @@ router.get(
   userController.getUserProfile
 );
 
-router.put(
+router.patch(
   "/editprofile",
   auth(USER_ROLE.ADMIN, USER_ROLE.USER),
   (req: Request, res: Response, next: NextFunction) => {

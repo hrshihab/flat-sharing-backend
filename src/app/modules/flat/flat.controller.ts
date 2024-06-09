@@ -9,7 +9,7 @@ const addFlat = catchAsync(async (req, res) => {
   //console.log(req.body, req.files);
   const userId = req.user.id;
   const payload = { ...req.body, userId };
-  console.log(payload);
+  //console.log(payload);
   const files = Array.isArray(req.files) ? req.files : [req.files]; // Ensure req.files is an array
   const result = await flatService.addFlat(files, payload);
   sendResponse(res, {
@@ -22,6 +22,7 @@ const addFlat = catchAsync(async (req, res) => {
 
 const getFlats = catchAsync(async (req, res) => {
   const user = req.user as any;
+  //console.log("hitted");
   const filters = pick(req.query, flatFilterableFields);
   //console.log(filters);
   const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
@@ -80,6 +81,7 @@ const updateMyFlat = catchAsync(async (req, res) => {
 });
 
 const deleteFlat = catchAsync(async (req, res) => {
+  //console.log(req.params.flatId, "final out");
   const result = await flatService.deleteFlat(req.params.flatId);
   sendResponse(res, {
     statusCode: httpStatus.OK,

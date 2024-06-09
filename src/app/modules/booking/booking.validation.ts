@@ -9,11 +9,10 @@ const bookingStatusValidation = z.object({
 const createBookingValidation = z.object({
   body: z.object({
     flatId: z.string(),
-    userId: z.string(),
     name: z.string(),
     age: z.number(),
     profession: z.string(),
-    maritalStatus: z.enum(["SINGLE", "MARRIED", "SEPARATED"]),
+    maritalStatus: z.enum(["SINGLE", "MARRIED", "SEPARATED"]).optional(),
     PresentAddress: z.string(),
     phoneNo: z.string(),
   }),

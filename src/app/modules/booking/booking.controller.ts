@@ -4,8 +4,8 @@ import sendResponse from "../../../shared/sendResponse";
 import { bookingService } from "./booking.service";
 
 const createBooking = catchAsync(async (req, res) => {
-  //console.log("req body:", req.body);
-  //console.log("req.user:", req.user);
+  console.log("req body:", req.body);
+  console.log("req.user:", req.user);
   const payload = {
     ...req.body,
     userId: req.user.id,
@@ -33,6 +33,7 @@ const getBooking = catchAsync(async (req, res) => {
 
 const getBookingByUserId = catchAsync(async (req, res) => {
   const result = await bookingService.getBookingByUserId(req.user.id);
+  //console.log(req.user.id, result);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -42,9 +43,9 @@ const getBookingByUserId = catchAsync(async (req, res) => {
 });
 
 const getBookingByFlatId = catchAsync(async (req, res) => {
-  const { flatId } = req.params;
+  //const { flatId } = req.params;
   const { id, role } = req.user;
-  const result = await bookingService.getBookingByFlatId(flatId, id, role);
+  const result = await bookingService.getBookingByFlatId(id, role);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -54,12 +55,31 @@ const getBookingByFlatId = catchAsync(async (req, res) => {
 });
 
 const updateStatus = catchAsync(async (req, res) => {
-  //console.log("come here");
+  //console.log("come here", req.body);
   const { bookingId } = req.params;
   const { id, role } = req.user;
   const payload = req.body;
-  //console.log(bookingId, payload);
+  //console.log(bookingId, payload, id, role);
   const result = await bookingService.updateStatus(
+    bookingId,
+    payload,
+    id,
+    role
+  );
+  console.log("result", result);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Booking requests updated successfully",
+    data: result,
+  });
+});
+
+const updateStatusByUser = catchAsync(async (req, res) => {
+  const { bookingId } = req.params;
+  const { id, role } = req.user;
+  const payload = req.body;
+  const result = await bookingService.updateStatusByUser(
     bookingId,
     payload,
     id,
@@ -79,4 +99,5 @@ export const bookingController = {
   updateStatus,
   getBookingByUserId,
   getBookingByFlatId,
+  updateStatusByUser,
 };

@@ -9,6 +9,7 @@ const router = express.Router();
 router.post(
   "/booking-requests",
   auth(USER_ROLE.ADMIN, USER_ROLE.USER),
+  validateRequest(bookingValidation.createBookingValidation),
   bookingController.createBooking
 );
 //get all booking requests by Admin
@@ -19,7 +20,7 @@ router.get(
 );
 //get booking requests by flat id
 router.get(
-  "/get-all-requests/:flatId",
+  "/get-all-requests-user",
   auth(USER_ROLE.ADMIN, USER_ROLE.USER),
   bookingController.getBookingByFlatId
 );
@@ -31,12 +32,19 @@ router.get(
   bookingController.getBookingByUserId
 );
 
-//update booking status
+//update booking status by admin
 router.put(
   "/booking-requests/:bookingId",
   auth(USER_ROLE.ADMIN, USER_ROLE.USER),
   validateRequest(bookingValidation.bookingStatusValidation),
   bookingController.updateStatus
+);
+//update booking status by user
+router.put(
+  "user/booking-requests/:bookingId",
+  auth(USER_ROLE.USER),
+  validateRequest(bookingValidation.bookingStatusValidation),
+  bookingController.updateStatusByUser
 );
 
 export const bookingRoutes = router;

@@ -144,7 +144,7 @@ const forgotPassword = async (payload: { email: string }) => {
   const resetPassLink =
     config.reset_pass_link + `?userId=${user.id}&token=${resetPassToken}`;
 
-  await emailSender(
+  const result = await emailSender(
     user.email,
     `
         <div>
@@ -161,12 +161,14 @@ const forgotPassword = async (payload: { email: string }) => {
         </div>
         `
   );
+  return result;
 };
 
-const resetPassword = async (
-  token: string,
-  payload: { id: string; password: string }
-) => {
+const resetPassword = async (payload: {
+  id: string;
+  token: string;
+  password: string;
+}) => {
   const userData = await prisma.user.findUniqueOrThrow({
     where: {
       id: payload.id,
@@ -174,8 +176,12 @@ const resetPassword = async (
     },
   });
 
+  if (!userData) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User not found!");
+  }
+
   const isValidToken = jwtHelper.verifyToken(
-    token,
+    payload.token,
     config.jwt.reset_pass_secret as Secret
   );
 
@@ -187,7 +193,7 @@ const resetPassword = async (
   const password = await bcrypt.hash(payload.password, 10);
 
   // update into database
-  await prisma.user.update({
+  const resutl = await prisma.user.update({
     where: {
       id: payload.id,
     },
@@ -195,6 +201,7 @@ const resetPassword = async (
       password,
     },
   });
+  return resutl;
 };
 
 export const authService = {

@@ -11,7 +11,7 @@ import { IAuthUser } from "../../interface/common";
 
 const addFlat = async (files: any[], payload: TFlat) => {
   try {
-    console.log(payload);
+    //console.log(payload);
     const imageUrls = [];
     if (files && files.length > 0) {
       for (const file of files) {
@@ -49,7 +49,7 @@ const getFlatsFromDB = async (
 ) => {
   const { limit, page, skip } = paginationHelper.calculatePagination(options);
   const { location, priceMin, priceMax, bedrooms } = filters;
-  console.log(priceMax, priceMin, location, bedrooms);
+  //console.log(priceMax, priceMin, location, bedrooms);
 
   const andConditions: Prisma.FlatWhereInput[] = [];
 
@@ -108,6 +108,12 @@ const getFlatsFromDB = async (
           status: true,
         },
       },
+      // See how many booikings are there for each flat
+      booking: {
+        select: {
+          id: true,
+        },
+      },
     },
   });
 
@@ -126,10 +132,29 @@ const getFlatsFromDB = async (
 };
 
 const getFlatByUserId = async (userId: string) => {
-  console.log(userId);
+  //console.log(userId);
   const result = await prisma.flat.findMany({
     where: {
       userId: userId,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          profilePhoto: true,
+          role: true,
+          needPasswordChange: true,
+          status: true,
+        },
+      },
+      // See how many booikings are there for each flat
+      booking: {
+        select: {
+          id: true,
+        },
+      },
     },
   });
 
@@ -158,7 +183,7 @@ const getSingleFlatFromDB = async (id: string) => {
 };
 
 const updateFlat = async (flatId: string, payload: Partial<TFlat>) => {
-  console.log(flatId, payload);
+  //console.log(flatId, payload);
   const result = await prisma.flat.update({
     where: {
       id: flatId,
@@ -192,7 +217,7 @@ const updateMyFlatDataIntoDB = async (
 };
 
 const deleteFlat = async (flatId: string) => {
-  console.log(flatId);
+  //console.log(flatId);
 
   try {
     // Use a transaction to ensure atomicity
@@ -214,7 +239,7 @@ const deleteFlat = async (flatId: string) => {
       return flat;
     });
 
-    console.log("Flat deleted successfully:", result);
+    //console.log("Flat deleted successfully:", result);
     return result;
   } catch (error) {
     throw new ApiError(httpStatus.FORBIDDEN, "Failed to delete flat");

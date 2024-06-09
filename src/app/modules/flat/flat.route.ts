@@ -12,6 +12,7 @@ router.post(
   "/create-flat",
   auth(USER_ROLE.ADMIN, USER_ROLE.USER),
   (req: Request, res: Response, next: NextFunction) => {
+    //console.log(req.body, req.files); // Log the body
     upload(req, res, function (err) {
       if (err) {
         return res.status(400).json({ message: err.message });
@@ -40,7 +41,11 @@ router.post(
   flatController.addFlat
 );
 
-router.get("/get-all-flats", auth(USER_ROLE.ADMIN), flatController.getFlats);
+router.get(
+  "/get-all-flats",
+  //auth(USER_ROLE.ADMIN),
+  flatController.getFlats
+);
 
 router.get(
   "/get-my-flats",
@@ -67,7 +72,7 @@ router.patch(
 );
 
 router.delete(
-  "/deleteFlat/:flatId  ",
+  "/deleteFlat/:flatId",
   auth(USER_ROLE.ADMIN, USER_ROLE.USER),
   flatController.deleteFlat
 );

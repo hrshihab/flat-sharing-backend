@@ -50,6 +50,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 
 const changePassword = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
+  //console.log("uff", user, req.body);
   const result = await AuthServices.changePassword(user, req.body);
 
   sendResponse(res, {
@@ -61,28 +62,27 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
 });
 
 const forgotPassword = catchAsync(async (req: Request, res: Response) => {
-  console.log(req.user.email);
-  const payload = { email: req.user.email };
-  await AuthServices.forgotPassword(payload);
+  //console.log(req.body);
+
+  const result = await AuthServices.forgotPassword(req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Check your email!",
-    data: null,
+    data: result,
   });
 });
 
 const resetPassword = catchAsync(async (req: Request, res: Response) => {
-  const token = req.headers.authorization || "";
-
-  await AuthServices.resetPassword(token, req.body);
+  //console.log(req.body);
+  const result = await AuthServices.resetPassword(req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Password Reset!",
-    data: null,
+    data: result,
   });
 });
 

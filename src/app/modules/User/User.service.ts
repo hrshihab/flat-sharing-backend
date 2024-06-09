@@ -57,7 +57,7 @@ const updateUserProfile = async (
   // });
   // return result;
   try {
-    console.log(payload);
+    //console.log(payload);
     let photoUrl = "";
     if (files && files.length > 0) {
       const file = files[0];
@@ -66,14 +66,15 @@ const updateUserProfile = async (
       const response = await sendImageToCloudinary(imageName, path);
       const { secure_url } = response as { secure_url: string };
       photoUrl = secure_url;
+      payload = { ...payload, profilePhoto: photoUrl };
     }
-    console.log(photoUrl);
+    console.log(payload);
 
     const result = await prisma.user.update({
       where: { id: userId },
       data: {
         ...payload,
-        profilePhoto: photoUrl,
+
         // Add the user property
       },
     });
