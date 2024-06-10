@@ -22,10 +22,10 @@ const jwtHelper_1 = require("../../../helper/jwtHelper");
 const client_1 = require("@prisma/client");
 const emailSender_1 = __importDefault(require("./emailSender"));
 const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    //console.log("loginUser", payload);
+    console.log("loginUser", payload);
     const user = yield prisma_1.default.user.findFirst({
         where: {
-            OR: [{ email: payload.email }, { username: payload.username }],
+            email: payload.email,
             status: client_1.UserStatus.ACTIVE,
         },
         select: {
@@ -37,7 +37,7 @@ const loginUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
             needPasswordChange: true,
         },
     });
-    //console.log(user);
+    console.log(user);
     if (!user) {
         throw new ApiError_1.default(http_status_1.default.NOT_FOUND, "User not Active or not found!");
     }

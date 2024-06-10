@@ -55,7 +55,7 @@ router.get(
 
 router.get(
   "/getSingleFlat/:id",
-  auth(USER_ROLE.ADMIN, USER_ROLE.USER),
+  //auth(USER_ROLE.ADMIN, USER_ROLE.USER),
   flatController.getSingleFlat
 );
 

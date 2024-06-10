@@ -47,6 +47,7 @@ const getFlatByUserId = catchAsync(async (req, res) => {
 });
 
 const getSingleFlat = catchAsync(async (req, res) => {
+  console.log(req.params.id, "params");
   const { id } = req.params;
   const result = await flatService.getSingleFlatFromDB(id);
   sendResponse(res, {

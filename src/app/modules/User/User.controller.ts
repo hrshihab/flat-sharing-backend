@@ -44,7 +44,7 @@ const updateUserStatus = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const updateUserProfile = catchAsync(async (req: Request, res: Response) => {
-  //console.log(req.files);
+  console.log(req.files);
   console.log(req.body);
   const userId = req.user.id;
   const result = await userService.updateUserProfile(

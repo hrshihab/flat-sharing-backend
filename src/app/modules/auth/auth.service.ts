@@ -8,15 +8,11 @@ import { generateToken, jwtHelper } from "../../../helper/jwtHelper";
 import { UserStatus } from "@prisma/client";
 import emailSender from "./emailSender";
 
-const loginUser = async (payload: {
-  email?: string;
-  username?: string;
-  password: string;
-}) => {
-  //console.log("loginUser", payload);
+const loginUser = async (payload: { email: string; password: string }) => {
+  console.log("loginUser", payload);
   const user = await prisma.user.findFirst({
     where: {
-      OR: [{ email: payload.email }, { username: payload.username }],
+      email: payload.email,
       status: UserStatus.ACTIVE,
     },
     select: {
@@ -28,7 +24,7 @@ const loginUser = async (payload: {
       needPasswordChange: true,
     },
   });
-  //console.log(user);
+  console.log(user);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not Active or not found!");
   }

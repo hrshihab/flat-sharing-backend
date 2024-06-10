@@ -16,6 +16,7 @@ import { Request, Response } from "express";
 // });
 
 const loginUser = catchAsync(async (req: Request, res: Response) => {
+  console.log("auth", req.body);
   const result = await AuthServices.loginUser(req.body);
 
   const { refreshToken } = result;

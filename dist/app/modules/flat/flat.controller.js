@@ -58,6 +58,7 @@ const getFlatByUserId = (0, catchAsync_1.default)((req, res) => __awaiter(void 0
     });
 }));
 const getSingleFlat = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.params.id, "params");
     const { id } = req.params;
     const result = yield flat_service_1.flatService.getSingleFlatFromDB(id);
     (0, sendResponse_1.default)(res, {

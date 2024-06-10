@@ -42,7 +42,9 @@ router.get("/get-all-flats",
 //auth(USER_ROLE.ADMIN),
 flat_controller_1.flatController.getFlats);
 router.get("/get-my-flats", (0, auth_1.default)(User_constant_1.USER_ROLE.USER, User_constant_1.USER_ROLE.ADMIN), flat_controller_1.flatController.getFlatByUserId);
-router.get("/getSingleFlat/:id", (0, auth_1.default)(User_constant_1.USER_ROLE.ADMIN, User_constant_1.USER_ROLE.USER), flat_controller_1.flatController.getSingleFlat);
+router.get("/getSingleFlat/:id", 
+//auth(USER_ROLE.ADMIN, USER_ROLE.USER),
+flat_controller_1.flatController.getSingleFlat);
 router.patch("/updateFLat/:flatId", (0, auth_1.default)(User_constant_1.USER_ROLE.ADMIN), flat_controller_1.flatController.updateFlat);
 router.patch("/updateMyFLat/:id", (0, auth_1.default)(User_constant_1.USER_ROLE.ADMIN, User_constant_1.USER_ROLE.USER), flat_controller_1.flatController.updateMyFlat);
 router.delete("/deleteFlat/:flatId", (0, auth_1.default)(User_constant_1.USER_ROLE.ADMIN, User_constant_1.USER_ROLE.USER), flat_controller_1.flatController.deleteFlat);

@@ -51,7 +51,7 @@ const updateUserStatus = (0, catchAsync_1.default)((req, res) => __awaiter(void 
     });
 }));
 const updateUserProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    //console.log(req.files);
+    console.log(req.files);
     console.log(req.body);
     const userId = req.user.id;
     const result = yield User_service_1.userService.updateUserProfile(userId, req.files, req.body);
