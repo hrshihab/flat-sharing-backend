@@ -5,6 +5,8 @@ const pick = (obj, keys) => {
     for (const key of keys) {
         if (obj && Object.hasOwnProperty.call(obj, key)) {
             finalPicked[key] = obj[key];
+            //console.log("finalPicked", finalPicked[key]);
+            //console.log("obj", obj[key]);
         }
     }
     return finalPicked;

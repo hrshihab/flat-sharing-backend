@@ -8,7 +8,7 @@ import cookieParser from "cookie-parser";
 const app: Application = express();
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["https://6666ffb2d05ce945620937f9--flat-mate.netlify.app"],
 
     credentials: true,
   })
@@ -18,7 +18,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://6666ffb2d05ce945620937f9--flat-mate.netlify.app"
+  );
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.header("Access-Control-Allow-Headers", "Content-Type");
   next();

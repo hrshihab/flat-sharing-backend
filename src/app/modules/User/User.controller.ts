@@ -27,8 +27,24 @@ const getUserProfile = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const updateUserStatus = catchAsync(async (req: Request, res: Response) => {
+  //console.log(req.files);
+  console.log(req.body);
+  const userId = req.body.id;
+  const result = await userService.updateUserProfile(
+    userId,
+    req.files,
+    req.body
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User profile updated successfully",
+    data: result,
+  });
+});
 const updateUserProfile = catchAsync(async (req: Request, res: Response) => {
-  console.log(req.files);
+  //console.log(req.files);
   console.log(req.body);
   const userId = req.user.id;
   const result = await userService.updateUserProfile(
@@ -59,5 +75,6 @@ export const userController = {
   createUser,
   getUserProfile,
   updateUserProfile,
+  updateUserStatus,
   getAllUser,
 };

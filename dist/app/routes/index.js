@@ -11,19 +11,19 @@ const booking_route_1 = require("../modules/booking/booking.route");
 const router = express_1.default.Router();
 const moduleRoutes = [
     {
-        path: "/",
+        path: "/user",
         route: User_routes_1.userRoutes,
     },
     {
-        path: "/",
+        path: "/auth",
         route: auth_route_1.authRoutes,
     },
     {
-        path: "/",
-        route: flat_route_1.flatRoutes,
+        path: "/flat",
+        route: flat_route_1.FLatRoutes,
     },
     {
-        path: "/",
+        path: "/flat-share",
         route: booking_route_1.bookingRoutes,
     },
 ];

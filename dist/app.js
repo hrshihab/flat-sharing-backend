@@ -8,13 +8,25 @@ const cors_1 = __importDefault(require("cors"));
 const routes_1 = __importDefault(require("./app/routes"));
 const globalErrorHandler_1 = __importDefault(require("./app/middleware/globalErrorHandler"));
 const http_status_1 = __importDefault(require("http-status"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: ["https://6666ffb2d05ce945620937f9--flat-mate.netlify.app"],
+    credentials: true,
+}));
 app.use(express_1.default.json());
-app.get("/", (req, res) => {
-    res.send("Hello World!");
+app.use(express_1.default.urlencoded({ extended: true }));
+app.use((0, cookie_parser_1.default)());
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "https://6666ffb2d05ce945620937f9--flat-mate.netlify.app");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.header("Access-Control-Allow-Headers", "Content-Type");
+    next();
 });
-app.use("/api", routes_1.default);
+app.get("/", (req, res) => {
+    res.send("Flat Sharing Application!");
+});
+app.use("/api/v1", routes_1.default);
 app.use(globalErrorHandler_1.default);
 app.use((req, res, next) => {
     res.status(http_status_1.default.NOT_FOUND).json({

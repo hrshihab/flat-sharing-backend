@@ -4,19 +4,18 @@ exports.userValidation = void 0;
 const zod_1 = require("zod");
 const userCreateValidationSchema = zod_1.z.object({
     body: zod_1.z.object({
-        name: zod_1.z.string(),
+        username: zod_1.z.string(),
         email: zod_1.z.string().email(),
         password: zod_1.z.string(),
-        bio: zod_1.z.string().optional(),
-        profession: zod_1.z.string().optional(),
-        address: zod_1.z.string().optional(),
     }),
 });
 const userUpdateValidationSchema = zod_1.z.object({
     body: zod_1.z.object({
-        bio: zod_1.z.string().optional(),
-        profession: zod_1.z.string().optional(),
-        address: zod_1.z.string().optional(),
+        username: zod_1.z.string().optional(),
+        email: zod_1.z.string().optional(),
+        status: zod_1.z.enum(["ACTIVE", "BLOCKED", "DELETED"]).optional(),
+        // role will be ADMIN or USER
+        role: zod_1.z.enum(["ADMIN", "USER"]).optional(),
     }),
 });
 exports.userValidation = {
