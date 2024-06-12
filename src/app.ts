@@ -8,10 +8,7 @@ import cookieParser from "cookie-parser";
 const app: Application = express();
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://spare-rooms-frontend.vercel.app",
-    ], // Allow any origin
+    origin: ["http://localhost:3000", "https://flat-mate.netlify.app"], // Allow any origin
     credentials: true,
   })
 );
@@ -22,8 +19,8 @@ app.use(cookieParser());
 app.use((req, res, next) => {
   res.header(
     "Access-Control-Allow-Origin",
-    "http://localhost:3000"
-    //'https://spare-rooms-frontend.vercel.app'
+    //"http://localhost:3000",
+    "https://flat-mate.netlify.app"
   );
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.header("Access-Control-Allow-Headers", "Content-Type");
