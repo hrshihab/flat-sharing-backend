@@ -24,14 +24,16 @@ export const sendImageToCloudinary = (imageName: string, filePath: string) => {
             error.stack
           );
           reject(error);
+        } else {
+          resolve(result);
         }
-        resolve(result);
-        // delete a file asynchronously
+
+        // Delete the file asynchronously
         fs.unlink(filePath, (err) => {
           if (err) {
-            reject(err);
+            console.error("Error deleting file:", err);
           } else {
-            // console.log("file deleted");
+            console.log("Temporary file deleted:", filePath);
           }
         });
       }
@@ -41,12 +43,7 @@ export const sendImageToCloudinary = (imageName: string, filePath: string) => {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = path.join("/tmp");
-    //console.log("uploadDir", fs.mkdirSync(uploadDir));
-    // Ensure the /tmp directory exists
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir);
-    }
+    const uploadDir = "/tmp"; // Use the /tmp directory
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
@@ -58,7 +55,7 @@ const storage = multer.diskStorage({
   },
 });
 
-export const upload = multer({ storage }).array("files", 10); // Allow up to 10 files
+export const upload = multer({ storage }).array("files", 10);
 
 // /* eslint-disable no-console */
 // import { v2 as cloudinary } from "cloudinary";

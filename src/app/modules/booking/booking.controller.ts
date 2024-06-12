@@ -4,8 +4,8 @@ import sendResponse from "../../../shared/sendResponse";
 import { bookingService } from "./booking.service";
 
 const createBooking = catchAsync(async (req, res) => {
-  console.log("req body:", req.body);
-  console.log("req.user:", req.user);
+  //console.log("req body:", req.body);
+  //console.log("req.user:", req.user);
   const payload = {
     ...req.body,
     userId: req.user.id,

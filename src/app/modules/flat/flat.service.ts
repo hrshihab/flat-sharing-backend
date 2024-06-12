@@ -9,26 +9,23 @@ import httpStatus from "http-status";
 import { USER_ROLE } from "../User/User.constant";
 import { IAuthUser } from "../../interface/common";
 
-const addFlat = async (files: any[], payload: TFlat) => {
+const addFlat = async (payload: TFlat) => {
   try {
     //console.log(payload);
-    const imageUrls = [];
-    if (files && files.length > 0) {
-      for (const file of files) {
-        const imageName = `flat-${payload.rentAmount}-${file.originalname}`;
-        const path = file.path;
-        const response = await sendImageToCloudinary(imageName, path);
-        const { secure_url } = response as { secure_url: string };
-        imageUrls.push(secure_url);
-      }
-    }
+    // const imageUrls = [];
+    // if (files && files.length > 0) {
+    //   for (const file of files) {
+    //     const imageName = `flat-${payload.rentAmount}-${file.originalname}`;
+    //     const path = file.path;
+    //     const response = await sendImageToCloudinary(imageName, path);
+    //     const { secure_url } = response as { secure_url: string };
+    //     imageUrls.push(secure_url);
+    //   }
+    // }
+    console.log(payload);
 
     const result = await prisma.flat.create({
-      data: {
-        ...payload,
-        photos: imageUrls,
-        // Add the user property
-      },
+      data: payload,
     });
 
     return result;

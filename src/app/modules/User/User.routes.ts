@@ -24,32 +24,32 @@ router.get(
 router.patch(
   "/editprofile",
   auth(USER_ROLE.ADMIN, USER_ROLE.USER),
-  (req: Request, res: Response, next: NextFunction) => {
-    upload(req, res, function (err) {
-      if (err) {
-        return res.status(400).json({ message: err.message });
-      }
-      //console.log("files:", req.files); // Log the files
-      console.log("req.body before parsing:", req.body); // Log the body before parsing
+  // (req: Request, res: Response, next: NextFunction) => {
+  //   upload(req, res, function (err) {
+  //     if (err) {
+  //       return res.status(400).json({ message: err.message });
+  //     }
+  //     //console.log("files:", req.files); // Log the files
+  //     console.log("req.body before parsing:", req.body); // Log the body before parsing
 
-      try {
-        if (req.body.data) {
-          // Check if req.body.data is a string and parse it
-          //console.log("req.body.data before parsing:", req.body.data);
-          req.body = JSON.parse(req.body.data);
-          //console.log("req.body after parsing:", req.body);
-        }
-        next();
-      } catch (error: any) {
-        console.error("JSON parsing error:", error.message);
-        return res.status(400).json({
-          message: "Invalid JSON in request body",
-          error: error.message,
-        });
-      }
-    });
-  },
-  validateRequest(userValidation.userUpdateValidationSchema),
+  //     try {
+  //       if (req.body.data) {
+  //         // Check if req.body.data is a string and parse it
+  //         //console.log("req.body.data before parsing:", req.body.data);
+  //         req.body = JSON.parse(req.body.data);
+  //         //console.log("req.body after parsing:", req.body);
+  //       }
+  //       next();
+  //     } catch (error: any) {
+  //       console.error("JSON parsing error:", error.message);
+  //       return res.status(400).json({
+  //         message: "Invalid JSON in request body",
+  //         error: error.message,
+  //       });
+  //     }
+  //   });
+  // },
+  validateRequest(userValidation.userProfileUpdateValidationSchema),
   userController.updateUserProfile
 );
 router.patch(

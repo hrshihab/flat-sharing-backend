@@ -57,7 +57,7 @@ const updateUserStatus = async (
   // });
   // return result;
   try {
-    console.log(payload);
+    //console.log(payload);
     let photoUrl = "";
     if (files && files.length > 0) {
       const file = files[0];
@@ -68,7 +68,7 @@ const updateUserStatus = async (
       photoUrl = secure_url;
       payload = { ...payload, profilePhoto: photoUrl };
     }
-    console.log(payload);
+    //console.log(payload);
 
     const result = await prisma.user.update({
       where: { id: userId },
@@ -80,39 +80,13 @@ const updateUserStatus = async (
     throw new Error(error as string);
   }
 };
-const updateUserProfile = async (
-  userId: string,
-  files: any,
-  payload: Partial<TUser>
-) => {
-  // const result = await prisma.user.update({
-  //   where: { id: userId },
-  //   data: payload,
-  // });
-  // return result;
-  try {
-    console.log(payload);
-    let photoUrl = "";
-    if (files && files.length > 0) {
-      const file = files[0];
-      const imageName = `user-${file.originalname}`;
-      const path = file.path;
-      const response = await sendImageToCloudinary(imageName, path);
-      const { secure_url } = response as { secure_url: string };
-      photoUrl = secure_url;
-      payload = { ...payload, profilePhoto: photoUrl };
-    }
-    console.log(payload);
+const updateUserProfile = async (userId: string, payload: Partial<TUser>) => {
+  const result = await prisma.user.update({
+    where: { id: userId },
+    data: payload,
+  });
 
-    const result = await prisma.user.update({
-      where: { id: userId },
-      data: payload,
-    });
-
-    return result;
-  } catch (error) {
-    throw new Error(error as string);
-  }
+  return result;
 };
 
 //get  all user from database

@@ -24,7 +24,7 @@ const loginUser = async (payload: { email: string; password: string }) => {
       needPasswordChange: true,
     },
   });
-  console.log(user);
+  //console.log(user);
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not Active or not found!");
   }
@@ -65,6 +65,7 @@ const loginUser = async (payload: { email: string; password: string }) => {
 
 const refreshToken = async (token: string) => {
   let decodedData;
+  console.log("refreshToken", token);
   try {
     decodedData = jwtHelper.verifyToken(
       token,

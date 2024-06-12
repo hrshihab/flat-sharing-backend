@@ -7,6 +7,7 @@ const flatValidation = z.object({
     rentAmount: z.number(),
     bedrooms: z.number(),
     amenities: z.array(z.string()),
+    photos: z.array(z.string()),
   }),
 });
 

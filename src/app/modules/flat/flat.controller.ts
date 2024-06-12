@@ -6,12 +6,12 @@ import pick from "../../../shared/pick";
 import { flatFilterableFields } from "./flat.constant";
 
 const addFlat = catchAsync(async (req, res) => {
-  //console.log(req.body, req.files);
+  //console.log("cehck", req.body);
   const userId = req.user.id;
   const payload = { ...req.body, userId };
   //console.log(payload);
-  const files = Array.isArray(req.files) ? req.files : [req.files]; // Ensure req.files is an array
-  const result = await flatService.addFlat(files, payload);
+  /// const files = Array.isArray(req.files) ? req.files : [req.files]; // Ensure req.files is an array
+  const result = await flatService.addFlat(payload);
   sendResponse(res, {
     statusCode: httpStatus.CREATED,
     success: true,
@@ -47,7 +47,7 @@ const getFlatByUserId = catchAsync(async (req, res) => {
 });
 
 const getSingleFlat = catchAsync(async (req, res) => {
-  console.log(req.params.id, "params");
+  //console.log(req.params.id, "params");
   const { id } = req.params;
   const result = await flatService.getSingleFlatFromDB(id);
   sendResponse(res, {
